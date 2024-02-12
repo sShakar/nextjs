@@ -1,12 +1,7 @@
 import Link from 'next/link';
 import { prisma } from '@/db';
 import TodoItem from '@/components/TodoItem';
-
-async function toggleTodo(id: string, complete: boolean) {
-	'use server';
-
-	await prisma.todo.update({ where: { id }, data: { complete } });
-}
+import TodoForm from '@/components/TodoForm';
 
 export default async function HomePage() {
 	const todos = await prisma.todo.findMany();
@@ -23,9 +18,11 @@ export default async function HomePage() {
 					New
 				</Link>
 			</header>
+			<TodoForm />
+
 			<ul className="pl-4">
 				{todos.map(todo => (
-					<TodoItem key={todo.id} {...todo} toggleTodo={toggleTodo} />
+					<TodoItem key={todo.id} {...todo} />
 				))}
 			</ul>
 		</>
